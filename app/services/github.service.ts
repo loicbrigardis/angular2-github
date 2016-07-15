@@ -1,18 +1,30 @@
 import { Injectable } from '@angular/core';
 import { Http, Headers } from '@angular/http';
 import 'rxjs/add/operator/map';
+import 'rxjs/add/operator/catch';
 
 @Injectable()
 export class GitHubService {
-    private username: string;
+    private _username: string;
+    private _urlApiGit = "https://api.github.com/users/";
 
-    constructor(private _http: Http) { 
-        this.username ='loic';
+    constructor(private _http: Http) {
+
+    }
+    //user info
+    getUser() {
+        return this._http.get(this._urlApiGit + this. _username)
+            .map(res => res.json())
     }
 
-    getUser() {
-        return this._http.get('https://api.github.com/users/' + this.username)
+    //user repos
+    getRepos() {
+        return this._http.get(this._urlApiGit + this._username + '/repos')
             .map(res => res.json())
+    }
+
+    updateUser(username: string) {
+        this._username = username;
     }
 
 }
